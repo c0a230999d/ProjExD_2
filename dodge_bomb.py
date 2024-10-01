@@ -64,6 +64,20 @@ def main():
             if event.type == pg.QUIT: 
                 return
         screen.blit(bg_img, [0, 0])
+
+        txtT = font.render(str(pg.time.get_ticks), True, (255, 255, 255))
+        screen.blit(txtT, [0, 0])
+
+        if tmr == 3.6:
+            screen.blit(overlay, (0, 0))
+            c_txt = font.render("Clear The Game!!", True, (255, 255, 255))  #GameOverの表示
+            txt2_rct = c_txt.get_rect(center = (WIDTH//2, HEIGHT//2))
+            screen.blit(c_txt, txt2_rct)
+        
+            pg.display.update()
+            time.sleep(5)  #5秒待つ
+            return
+
         if kk_rct.colliderect(bb_rct):  
             #こうかとんと爆弾が重なっていたら
             screen.blit(overlay, (0, 0))
@@ -107,8 +121,8 @@ def main():
             vy *= -1
         screen.blit(bb_img, bb_rct)
         pg.display.update()
-        tmr += 1
-        clock.tick(50)
+        tmr += 0.01
+        clock.tick(100)
 
 
 if __name__ == "__main__":
