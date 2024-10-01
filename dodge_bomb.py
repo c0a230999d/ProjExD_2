@@ -49,7 +49,11 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
-        screen.blit(bg_img, [0, 0]) 
+        screen.blit(bg_img, [0, 0])
+        if kk_rct.colliderect(bb_rct):  
+            #こうかとんと爆弾が重なっていたら
+            print("Game Over")
+            return
 
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]  #横座標、縦座標
