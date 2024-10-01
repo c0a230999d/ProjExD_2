@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -31,6 +32,7 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
+    font = pg.font.Font(None, 80)
     bg_img = pg.image.load("fig/pg_bg.jpg")    
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
     kk_rct = kk_img.get_rect()
@@ -43,6 +45,18 @@ def main():
     bb_rct.centery = random.randint(0, HEIGHT)
     vx, vy = +5, -5
 
+    overlay = pg.Surface((WIDTH, HEIGHT))  #背景
+    overlay.set_alpha(200)  #背景の透明度
+    overlay.fill((0, 0, 0))  #背景を黒で埋める
+
+    kk2_img = pg.image.load("fig/8.png")  #GameOver後のこうかとん一号
+    kk2_rct = kk2_img.get_rect()
+    kk2_rct.center = 350, HEIGHT//2
+
+    kk2_2_img = pg.image.load("fig/8.png")  #GameOver後のこうかとん二号
+    kk2_2_rct = kk2_2_img.get_rect()
+    kk2_2_rct.center = 750, HEIGHT//2
+
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -52,7 +66,18 @@ def main():
         screen.blit(bg_img, [0, 0])
         if kk_rct.colliderect(bb_rct):  
             #こうかとんと爆弾が重なっていたら
-            print("Game Over")
+            screen.blit(overlay, (0, 0))
+
+            go_txt = font.render("GameOver", True, (255, 255, 255))  #GameOverの表示
+            txt_rct = go_txt.get_rect(center = (WIDTH//2, HEIGHT//2))
+            screen.blit(go_txt, txt_rct)
+            
+            screen.blit(kk2_img, kk2_rct)
+
+            screen.blit(kk2_2_img, kk2_2_rct)
+
+            pg.display.update()
+            time.sleep(5)  #5秒待つ
             return
 
         key_lst = pg.key.get_pressed()
